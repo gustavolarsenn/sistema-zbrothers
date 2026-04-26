@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('data_prevista')->nullable();
             $table->string('nome', 255);
             $table->decimal('valor', 10, 2);
-            $table->string('id_vendedor', 50);
+            $table->string('id_vendedor', 50)->nullable();
             $table->string('nome_vendedor', 255)->nullable();
             $table->string('situacao', 50);
             $table->string('codigo_rastreamento', 255)->nullable();
