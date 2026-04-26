@@ -1,0 +1,28 @@
+Projeto 1
+
+Fazer dashboard mostrando performance de embaladores (por dia)
+quantidade embalada x quantidade projetada
+tempo por embalação
+usar mesma fonte do sisteminha (trocar o filtro, buscar todos os status)
+Verificar casos de mais de um marcador por pedido
+
+OBS.: Não vem marcador na API de separação. Esperar input no sistema gerencial (a ser criado) de quantos é por separador, e fazer comparação em relação a isso. Aceitar tbm tempo de corte para analisar performance
+
+
+Projeto 2
+
+Em pedidos de venda, acompanhar esteira dos pedidos, e criar visualização gerencial (com filtros,
+para uso interno), do que foi enviado mas não foi entregue, e está há um tempo parado, ou o que foi cancelado, para ter melhor análise
+
+Na esteira, informações não vão alterar, somente o status. Exceto quando "Em aberto", que pode ter informações incompletas.
+
+descobrir delta de atualização de acordo com colunas data entrega, data faturamento, etc. Ou melhor, considerar data de atualização no "pesquisar pedidos"
+
+Para o fluxo de ETL. puxar via "pesquisar pedidos" todos os do dia, de acordo com a "data de atualização", e buscar via "obter pedidos" os que vieram.
+
+Atualização de tarde
+
+
+Projeto 3
+Semelhante ao sistema que já tem, buscar saldo de produto, porém a partir de pedidos de venda
+
