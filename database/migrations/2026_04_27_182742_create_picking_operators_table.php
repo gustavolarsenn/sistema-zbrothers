@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('picking_operators', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('name', 255);
+            $table->string('registration', 80)->nullable()->unique();
+            $table->boolean('active')->default(true);
+            $table->timestamps();
         });
     }
 

@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('picking_operator_goals', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->unsignedBigInteger('picking_operator_id');
+            $table->foreignId('picking_operator_id')->constrained('picking_operators')->cascadeOnDelete();
             $table->date('date');
-            $table->integer('goal');
+            $table->unsignedInteger('goal');
             $table->time('time_goal');
+            $table->timestamps();
+
+            $table->unique(['picking_operator_id', 'date']);
         });
     }
 

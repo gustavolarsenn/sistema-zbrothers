@@ -56,3 +56,32 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+## First Run
+- cp .env.example .env
+
+- docker compose --profile tools up -d --force-recreate node
+- docker compose --profile tools exec node sh -lc "npm ci && npm run build"
+- docker exec -it compras-php-1 sh -lc "ls -la public/build/manifest.json"
+- docker compose restart php nginx
+
+- docker exec -it php-1 sh
+- php artisan key:generate
+- php artisan migrate
+- php artisan db:seed
+
+- docker compose exec php sh -lc "mkdir -p storage bootstrap/cache; chown -R www-data:www-data storage bootstrap/cache; chmod -R ug+rwX storage bootstrap/cache"
+- docker compose exec php sh -lc "su -s /bin/sh -c 'touch storage/framework/cache/data/__perm_test && echo OK' www-data && rm -f storage/framework/cache/data/__perm_test"
+
+
+### Problemas de permissão
+
+- php artisan optimize:clear
+- php artisan permission:cache-reset
+- php artisan db:seed --class=PermissionsSeeder
+- php artisan permission:cache-reset
+
+### Mudanças no js, rodar:
+
+- docker compose exec node npm run build
