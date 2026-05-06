@@ -18,7 +18,7 @@
             <tbody>
                 @forelse ($operators as $operator)
                     <tr>
-                        <td><strong>{{ $operator->name }}</strong></td>
+                        <td><strong>{{ $operator->name ?: 'Operador #'.$operator->id }}</strong></td>
                         <td>{{ $operator->registration ?: '-' }}</td>
                         <td><span class="badge {{ $operator->active ? 'ok' : 'muted' }}">{{ $operator->active ? 'Ativo' : 'Inativo' }}</span></td>
                         <td>{{ $operator->product_pickings_count }}</td>

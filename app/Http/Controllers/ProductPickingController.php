@@ -6,7 +6,6 @@ use App\Models\PickingOperator;
 use App\Models\ProductPicking;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ProductPickingController extends Controller
@@ -15,19 +14,19 @@ class ProductPickingController extends Controller
     {
         $pickings = ProductPicking::query()
             ->with('operator')
-            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')))
-            ->when($request->filled('date'), fn ($query) => $query->whereDate('picking_date', $request->date('date')))
+            ->when($request->filled('situacao'), fn ($query) => $query->where('situacao', $request->string('situacao')))
+            ->when($request->filled('date'), fn ($query) => $query->whereDate(ProductPicking::DATE_COLUMN, $request->input('date')))
             ->when($request->filled('operator'), fn ($query) => $query->where('picking_operator_id', $request->integer('operator')))
-            ->latest('picking_date')
-            ->latest()
+            ->latest(ProductPicking::DATE_COLUMN)
+            ->latest('id')
             ->paginate(12)
             ->withQueryString();
 
         return view('product_picking.index', [
             'pickings' => $pickings,
             'operators' => $this->operators(),
-            'statuses' => ProductPicking::statuses(),
-            'filters' => $request->only(['status', 'date', 'operator']),
+            'statuses' => $this->statuses(),
+            'filters' => $request->only(['situacao', 'date', 'operator']),
         ]);
     }
 
@@ -35,12 +34,12 @@ class ProductPickingController extends Controller
     {
         return view('product_picking.create', [
             'picking' => new ProductPicking([
-                'quantity' => 1,
-                'status' => ProductPicking::STATUS_PENDING,
-                'picking_date' => now()->toDateString(),
+                'qtdVolumes' => 1,
+                'situacao' => ProductPicking::STATUS_PENDING,
+                'dataCriacao' => now()->toDateString(),
             ]),
             'operators' => $this->operators(),
-            'statuses' => ProductPicking::statuses(),
+            'statuses' => $this->statuses(),
         ]);
     }
 
@@ -65,7 +64,7 @@ class ProductPickingController extends Controller
         return view('product_picking.edit', [
             'picking' => $productPicking,
             'operators' => $this->operators(),
-            'statuses' => ProductPicking::statuses(),
+            'statuses' => $this->statuses(),
         ]);
     }
 
@@ -89,16 +88,35 @@ class ProductPickingController extends Controller
 
     private function validatedData(Request $request): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'picking_operator_id' => ['nullable', 'exists:picking_operators,id'],
-            'order_number' => ['nullable', 'string', 'max:80'],
-            'product_code' => ['nullable', 'string', 'max:80'],
-            'product_name' => ['nullable', 'string', 'max:255'],
-            'quantity' => ['required', 'integer', 'min:1'],
-            'status' => ['required', Rule::in(ProductPicking::statuses())],
-            'picking_date' => ['required', 'date'],
-            'notes' => ['nullable', 'string'],
+            'idOrigem' => ['nullable', 'string', 'max:80'],
+            'objOrigem' => ['nullable', 'string', 'max:255'],
+            'situacao' => ['required', 'string', 'max:255'],
+            'situacaoCheckout' => ['nullable', 'string', 'max:255'],
+            'dataCriacao' => ['nullable', 'date'],
+            'itens' => ['nullable', 'json'],
+            'qtdVolumes' => ['nullable', 'integer', 'min:0'],
+            'numero' => ['nullable', 'string', 'max:80'],
+            'dataEmissao' => ['nullable', 'date'],
+            'numeroPedidoEcommerce' => ['nullable', 'string', 'max:80'],
+            'idFormaEnvio' => ['nullable', 'string', 'max:80'],
+            'formaEnvio' => ['nullable', 'string', 'max:255'],
+            'idContato' => ['nullable', 'string', 'max:80'],
+            'destinatario' => ['nullable', 'string', 'max:255'],
+            'situacaoOrigem' => ['nullable', 'string', 'max:80'],
+            'dataSeparacao' => ['nullable', 'date'],
+            'dataCheckout' => ['nullable', 'date'],
+            'idOrigemVinc' => ['nullable', 'string', 'max:80'],
+            'objOrigemVinc' => ['nullable', 'string', 'max:255'],
+            'situacaoVenda' => ['nullable', 'string', 'max:80'],
         ]);
+
+        if (isset($data['itens'])) {
+            $data['itens'] = json_decode($data['itens'], true);
+        }
+
+        return $data;
     }
 
     private function operators()
@@ -107,5 +125,15 @@ class ProductPickingController extends Controller
             ->where('active', true)
             ->orderBy('name')
             ->get();
+    }
+
+    private function statuses()
+    {
+        return ProductPicking::query()
+            ->whereNotNull('situacao')
+            ->distinct()
+            ->orderBy('situacao')
+            ->pluck('situacao')
+            ->whenEmpty(fn ($statuses) => $statuses->merge(ProductPicking::statuses()));
     }
 }

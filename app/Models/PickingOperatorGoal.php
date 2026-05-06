@@ -40,8 +40,8 @@ class PickingOperatorGoal extends Model
     {
         return Attribute::get(fn (): int => ProductPicking::query()
             ->where('picking_operator_id', $this->picking_operator_id)
-            ->whereDate('picking_date', $this->date)
-            ->where('status', ProductPicking::STATUS_PACKED)
+            ->whereDate(ProductPicking::DATE_COLUMN, $this->date)
+            ->where('situacao', ProductPicking::STATUS_PACKED)
             ->count());
     }
 

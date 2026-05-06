@@ -75,7 +75,7 @@ class PickingOperatorController extends Controller
     private function validatedData(Request $request, ?PickingOperator $operator = null): array
     {
         return $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['nullable', 'string', 'max:255'],
             'registration' => ['nullable', 'string', 'max:80', 'unique:picking_operators,registration,'.($operator?->id ?? 'NULL')],
             'active' => ['nullable', 'boolean'],
         ]) + ['active' => false];

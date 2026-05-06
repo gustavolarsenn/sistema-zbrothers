@@ -26,30 +26,30 @@ class PickingOperatorGoalTest extends TestCase
 
         ProductPicking::create([
             'picking_operator_id' => $operator->id,
-            'status' => ProductPicking::STATUS_PACKED,
-            'picking_date' => '2026-04-27',
-            'quantity' => 1,
+            'situacao' => ProductPicking::STATUS_PACKED,
+            'dataCriacao' => '2026-04-27',
+            'qtdVolumes' => 1,
         ]);
 
         ProductPicking::create([
             'picking_operator_id' => $operator->id,
-            'status' => ProductPicking::STATUS_PENDING,
-            'picking_date' => '2026-04-27',
-            'quantity' => 1,
+            'situacao' => ProductPicking::STATUS_PENDING,
+            'dataCriacao' => '2026-04-27',
+            'qtdVolumes' => 1,
         ]);
 
         ProductPicking::create([
             'picking_operator_id' => $otherOperator->id,
-            'status' => ProductPicking::STATUS_PACKED,
-            'picking_date' => '2026-04-27',
-            'quantity' => 1,
+            'situacao' => ProductPicking::STATUS_PACKED,
+            'dataCriacao' => '2026-04-27',
+            'qtdVolumes' => 1,
         ]);
 
         ProductPicking::create([
             'picking_operator_id' => $operator->id,
-            'status' => ProductPicking::STATUS_PACKED,
-            'picking_date' => '2026-04-28',
-            'quantity' => 1,
+            'situacao' => ProductPicking::STATUS_PACKED,
+            'dataCriacao' => '2026-04-28',
+            'qtdVolumes' => 1,
         ]);
 
         $this->assertSame(1, $goal->fresh()->packed_count);

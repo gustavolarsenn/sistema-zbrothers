@@ -27,7 +27,7 @@
             <span style="width: {{ $goal->progress_percentage }}%"></span>
         </div>
         <p class="muted-text">
-            A contagem considera separacoes do operador em {{ $goal->date->format('d/m/Y') }} com situacao Embalada.
+            A contagem considera product_picking do operador em {{ $goal->date->format('d/m/Y') }} com dataCriacao no dia e situacao Embalada.
         </p>
     </section>
 </x-layouts.app>

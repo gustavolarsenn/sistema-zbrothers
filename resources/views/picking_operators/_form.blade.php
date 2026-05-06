@@ -1,7 +1,7 @@
 <div class="form-grid">
     <label>
         Nome
-        <input name="name" value="{{ old('name', $operator->name) }}" required maxlength="255">
+        <input name="name" value="{{ old('name', $operator->name) }}" maxlength="255">
         @error('name') <span class="field-error">{{ $message }}</span> @enderror
     </label>
 

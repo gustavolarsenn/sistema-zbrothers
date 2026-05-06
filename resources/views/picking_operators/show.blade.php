@@ -1,4 +1,4 @@
-<x-layouts.app :title="$operator->name" eyebrow="Operador">
+<x-layouts.app :title="$operator->name ?: 'Operador #'.$operator->id" eyebrow="Operador">
     <x-slot:actions>
         <x-button :href="route('picking-operators.edit', $operator)">Editar</x-button>
     </x-slot:actions>

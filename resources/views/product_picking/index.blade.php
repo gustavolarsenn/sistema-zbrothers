@@ -19,10 +19,10 @@
         </label>
         <label>
             Situacao
-            <select name="status">
+            <select name="situacao">
                 <option value="">Todas</option>
                 @foreach ($statuses as $status)
-                    <option value="{{ $status }}" @selected(($filters['status'] ?? '') === $status)>{{ $status }}</option>
+                    <option value="{{ $status }}" @selected(($filters['situacao'] ?? '') === $status)>{{ $status }}</option>
                 @endforeach
             </select>
         </label>
@@ -35,9 +35,9 @@
                 <tr>
                     <th>Data</th>
                     <th>Operador</th>
-                    <th>Pedido</th>
-                    <th>Produto</th>
-                    <th>Qtd.</th>
+                    <th>Numero</th>
+                    <th>Destinatario</th>
+                    <th>Volumes</th>
                     <th>Situacao</th>
                     <th class="actions-cell">Acoes</th>
                 </tr>
@@ -45,12 +45,12 @@
             <tbody>
                 @forelse ($pickings as $picking)
                     <tr>
-                        <td>{{ $picking->picking_date->format('d/m/Y') }}</td>
-                        <td>{{ $picking->operator?->name ?? '-' }}</td>
-                        <td>{{ $picking->order_number ?: '-' }}</td>
-                        <td>{{ $picking->product_name ?: $picking->product_code ?: '-' }}</td>
-                        <td>{{ $picking->quantity }}</td>
-                        <td><span class="badge {{ $picking->status === 'Embalada' ? 'ok' : 'info' }}">{{ $picking->status }}</span></td>
+                        <td>{{ $picking->dataCriacao?->format('d/m/Y') ?? '-' }}</td>
+                        <td>{{ $picking->operator?->name ?? 'Sem operador' }}</td>
+                        <td>{{ $picking->numero ?: '-' }}</td>
+                        <td>{{ $picking->destinatario ?: '-' }}</td>
+                        <td>{{ $picking->qtdVolumes ?? '-' }}</td>
+                        <td><span class="badge {{ $picking->situacao === 'Embalada' ? 'ok' : 'info' }}">{{ $picking->situacao }}</span></td>
                         <td class="actions-cell">
                             <a href="{{ route('product-picking.show', $picking) }}">Ver</a>
                             <a href="{{ route('product-picking.edit', $picking) }}">Editar</a>

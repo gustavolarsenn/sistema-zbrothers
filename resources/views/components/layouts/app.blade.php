@@ -25,7 +25,7 @@
         </a>
 
         <nav class="nav-list" aria-label="Principal">
-            <a href="{{ route('picking-operator-goals.index') }}" @class(['active' => request()->routeIs('picking-operator-goals.*')])>Metas diarias</a>
+            <a href="{{ route('picking-operator-goals.index') }}" @class(['active' => request()->routeIs('picking-operator-goals.*') || request()->routeIs('dashboard')])>Dashboard</a>
             <a href="{{ route('product-picking.index') }}" @class(['active' => request()->routeIs('product-picking.*')])>Separacoes</a>
             <a href="{{ route('picking-operators.index') }}" @class(['active' => request()->routeIs('picking-operators.*')])>Operadores</a>
         </nav>

@@ -10,6 +10,7 @@ class ProductPicking extends Model
 {
     use HasFactory;
 
+    public const DATE_COLUMN = 'dataCriacao';
     public const STATUS_PENDING = 'Pendente';
     public const STATUS_SEPARATING = 'Separando';
     public const STATUS_PACKED = 'Embalada';
@@ -17,22 +18,41 @@ class ProductPicking extends Model
 
     protected $table = 'product_picking';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'picking_operator_id',
-        'order_number',
-        'product_code',
-        'product_name',
-        'quantity',
-        'status',
-        'picking_date',
-        'notes',
+        'idOrigem',
+        'objOrigem',
+        'situacao',
+        'situacaoCheckout',
+        'dataCriacao',
+        'itens',
+        'qtdVolumes',
+        'numero',
+        'dataEmissao',
+        'numeroPedidoEcommerce',
+        'idFormaEnvio',
+        'formaEnvio',
+        'idContato',
+        'destinatario',
+        'situacaoOrigem',
+        'dataSeparacao',
+        'dataCheckout',
+        'idOrigemVinc',
+        'objOrigemVinc',
+        'situacaoVenda',
     ];
 
     protected function casts(): array
     {
         return [
-            'picking_date' => 'date',
-            'quantity' => 'integer',
+            'dataCriacao' => 'date',
+            'dataEmissao' => 'date',
+            'dataSeparacao' => 'date',
+            'dataCheckout' => 'date',
+            'itens' => 'array',
+            'qtdVolumes' => 'integer',
         ];
     }
 
@@ -49,5 +69,10 @@ class ProductPicking extends Model
     public function operator(): BelongsTo
     {
         return $this->belongsTo(PickingOperator::class, 'picking_operator_id');
+    }
+
+    public function scopePacked($query)
+    {
+        return $query->where('situacao', self::STATUS_PACKED);
     }
 }
